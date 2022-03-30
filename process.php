@@ -2,7 +2,32 @@
 include ("setup_db.php");
 $mysqli = db_iconnect("equipment");
 $all_devices = array();
-$query = "SELECT * FROM devices LIMIT 0,100";
+$all_filters_placeholder = array();
+$device_type = $_POST['device_type'];
+$manufacturer = $_POST['manufacturer'];
+$serial_number = $_POST['serial_number'];
+$all_filters = array("type" => $device_type, "manufacturer" => $manufacturer, "serial_number" => $serial_number);
+$query = (!array_filter($all_filters)) ? "SELECT * FROM devices" : "SELECT * FROM devices WHERE ";
+
+foreach ($all_filters as $key => $filter) {
+    if (empty($filter)) {
+        continue;
+    }
+
+    $all_filters_placeholder[] = "$key = '$filter'";
+}
+
+foreach ($all_filters_placeholder as $key => $filter) {
+    if ($key == count($all_filters_placeholder) - 1) {
+        $query .= $filter;
+        continue;
+    }
+
+    $query .= $filter . " AND ";
+}
+
+$query .= " LIMIT 0,100;";
+
 $result = $mysqli->query($query) or die($mysqli->error);
 
 
@@ -12,7 +37,3 @@ while($row = $result->fetch_assoc()) {
 
 $updated_all_devices = rawurlencode(json_encode($all_devices));
 echo $updated_all_devices;
-
-// echo "<pre>";
-// print_r($all_devices);
-// echo "</pre>";
