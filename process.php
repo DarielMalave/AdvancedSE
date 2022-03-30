@@ -6,6 +6,9 @@ $all_filters_placeholder = array();
 $device_type = $_POST['device_type'];
 $manufacturer = $_POST['manufacturer'];
 $serial_number = $_POST['serial_number'];
+$serial_number = trim($serial_number, "SN-");
+$cardUpdatedCount = $_POST['cardCountUpdated'];
+$rowsPerPage = $_POST['rowsPerPage'];
 $all_filters = array("type" => $device_type, "manufacturer" => $manufacturer, "serial_number" => $serial_number);
 $query = (!array_filter($all_filters)) ? "SELECT * FROM devices" : "SELECT * FROM devices WHERE ";
 
@@ -26,7 +29,8 @@ foreach ($all_filters_placeholder as $key => $filter) {
     $query .= $filter . " AND ";
 }
 
-$query .= " LIMIT 0,100;";
+$query .= " LIMIT $cardUpdatedCount, $rowsPerPage;";
+// $query .= " LIMIT 0,100;";
 
 $result = $mysqli->query($query) or die($mysqli->error);
 
