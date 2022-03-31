@@ -1,5 +1,6 @@
 <head>
-    <link rel="stylesheet" href="styles.css"></link>
+    <link rel="stylesheet" href="styles.css">
+    </link>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="script/query.js" defer></script>
 </head>
@@ -71,4 +72,62 @@
 
 <hr>
 
-<h2>Add Devices to Database</h2>
+<div class="title_con">
+    <h2>Add Device to Database</h2>
+    <div class="dropdown">
+        <img src="circle-question-solid.svg" class="icon">
+        <div class="dropdown-content">
+            <div class="info_text">
+                <ul>
+                    <li>Enter the new device's type, manufacturer, and serial number.</li>
+                    <br>
+                    <li>Must be unique serial number - duplicate serial numbers will not be accepted.</li>
+                    <br>
+                    <li>
+                        Preferably do not add new device type and/or manufacturer with device - try to keep both fields
+                        within the 7 pre-defined device type and 30 manufacturer names from the 5 million records.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+    if (isset($_GET['manfail'])) {
+        echo "<p>Invalid manufacturer name.</p>";
+    }
+    if (isset($_GET['serialfail'])) {
+        echo "<p>Invalid serial number.</p>";
+    }
+    if (isset($_GET['duplicate'])) {
+        echo "<p>Duplicate serial number. Please try unique serial number.</p>";
+    }
+?>
+
+<form action="add_device.php" method="POST">
+    <label for="type">Select device type:</label>
+    <select id="new_type" name="new_type" required>
+        <option value="projector">Projector</option>
+        <option value="television">Television</option>
+        <option value="mobile phone">Mobile phone</option>
+        <option value="vehicle">Vehicle</option>
+        <option value="computer">Computer</option>
+        <option value="tablet">Tablet</option>
+        <option value="laptop">Laptop</option>
+    </select>
+
+    <br>
+
+    <label for="manufacturer">Enter manufacturer name: </label>
+    <input type="text" placeholder="Enter valid name" name="new_manufacturer" id="new_manufacturer" required>
+
+    <br>
+
+    <label for="serial_number">Enter serial number: </label>
+    <input type="text" placeholder="Enter exact serial number" name="new_serial_number" id="new_serial_number" required>
+
+    <br>
+
+    <button type="submit" name="new_device">Insert New Device</button>
+</form>
