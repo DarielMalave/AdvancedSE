@@ -30,7 +30,6 @@ foreach ($all_filters_placeholder as $key => $filter) {
 }
 
 $query .= " LIMIT $cardUpdatedCount, $rowsPerPage;";
-// $query .= " LIMIT 0,100;";
 
 $result = $mysqli->query($query) or die($mysqli->error);
 

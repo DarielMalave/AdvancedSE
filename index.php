@@ -81,7 +81,9 @@
                 <ul>
                     <li>Enter the new device's type, manufacturer, and serial number.</li>
                     <br>
-                    <li>Must be unique serial number - duplicate serial numbers will not be accepted.</li>
+                    <li>Must be unique serial number - duplicate serial numbers will not be accepted. Because of this,
+                        adding a device will search through all five million records and will take to some time.
+                    </li>
                     <br>
                     <li>
                         Preferably do not add new device type and/or manufacturer with device - try to keep both fields
@@ -102,6 +104,9 @@
     }
     if (isset($_GET['duplicate'])) {
         echo "<p>Duplicate serial number. Please try unique serial number.</p>";
+    }
+    if (isset($_GET['addsuccess'])) {
+        echo "<p>Device successfully added.";
     }
 ?>
 
@@ -130,4 +135,71 @@
     <br>
 
     <button type="submit" name="new_device">Insert New Device</button>
+</form>
+
+<br>
+
+<a href="#top">Return to top</a>
+
+<hr>
+
+<div class="title_con">
+    <h2>Modify Device in Database</h2>
+    <div class="dropdown">
+        <img src="circle-question-solid.svg" class="icon">
+        <div class="dropdown-content">
+            <div class="info_text">
+                <ul>
+                    <li>Enter existing serial number then select new device type, manufacturer, and/or new serial number.</li>
+                    <li>You must enter a valid manufacturer and device type, but new serial number is optional.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+    if (isset($_GET['modnotfound'])) {
+        echo "<p>Serial number not found.</p>";
+    }
+
+    if (isset($_GET['manfail'])) {
+        echo "<p>Invalid manufacturer name.</p>";
+    }
+
+    if (isset($_GET['modsuccess'])) {
+        echo "<p>Modification successful.</p>";
+    }
+?>
+
+<form action="modify_device.php" method="POST">
+    <label for="mod_serial_number">Enter serial number: </label>
+    <input type="text" placeholder="Enter existing serial number" name="mod_serial_number" id="mod_serial_number" required>
+
+    <br>
+
+    <label for="new_mod_serial_number">Enter new serial number (optional): </label>
+    <input type="text" placeholder="Enter new serial number" name="new_mod_serial_number" id="new_mod_serial_number" required>
+
+    <br>
+
+    <label for="type">Select new device type:</label>
+    <select id="mod_type" name="mod_type" required>
+        <option value="projector">Projector</option>
+        <option value="television">Television</option>
+        <option value="mobile phone">Mobile phone</option>
+        <option value="vehicle">Vehicle</option>
+        <option value="computer">Computer</option>
+        <option value="tablet">Tablet</option>
+        <option value="laptop">Laptop</option>
+    </select>
+
+    <br>
+
+    <label for="manufacturer">Enter new manufacturer name: </label>
+    <input type="text" placeholder="Enter valid name" name="mod_manufacturer" id="mod_manufacturer" required>
+
+    <br>
+
+    <button type="submit" name="mod_device">Modify Device</button>
 </form>

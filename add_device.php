@@ -7,18 +7,8 @@ $new_manufacturer = $_POST['new_manufacturer'];
 $new_serial_number = $_POST['new_serial_number'];
 $new_serial_number = trim($new_serial_number, "SN-");
 $manufacturers = array("Microsoft", "Sony", "LG", "Chrysler", "Samsung", "KIA", "OnePlus", "Apple", "Ford", "IBM", "Epson", "GM", "HP", "Dell", "Westinghouse","Lenovo", "TCL", "VIZIO", "Jeep", "Acer", "Hyundai", "Asus", "Optoma","Panasonic", "Hisense", "Generic", "ViewSonic", "Chervolet", "Insignia","Gateway");
-// $new_arr = array_map(function($piece){
-//     return (string) $piece;
-// }, $manufacturers);
 
-
-// if (!preg_match("/[A-Za-z]+/", $new_manufacturer) || strlen($new_manufacturer) > 32 || !in_array($new_manufacturer, $manufacturers)) {
-//     header("location: index.php?manfail");
-// }
-
-// print_r($manufacturers);
-// echo "<br>";
-// print_r($new_arr);
+// don't worry about checking device types since it's dropdown only
 
 if (!in_array($new_manufacturer, $manufacturers)) {
     header("location: index.php?manfail");
@@ -33,8 +23,6 @@ if (mysqli_num_rows($fetchDuplicate) > 0) {
     header("location: index.php?duplicate");
 }
 
-// if (count($rowForDuplicate) > 0) {
-//     header("location: index.php?duplicate");
-// }
-
-//$query = "INSERT INTO devices (type, manufacturer, serial_number) VALUES ('$new_type', '$new_manufacturer', '$new_serial_number');";
+$query = "INSERT INTO devices (type, manufacturer, serial_number) VALUES ('$new_type', '$new_manufacturer', '$new_serial_number');";
+$mysqli->query($query) or die($mysqli->error());
+header("location: index.php?addsuccess");
