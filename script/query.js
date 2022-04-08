@@ -131,7 +131,9 @@ function display_query(container, data_source) {
     }
 
     for (let i = 0; i < data_source.length; i++) {
-        let query_row = "" + data_source[i]['auto_id'] + ", " + data_source[i]['type'] + ", " + data_source[i]['manufacturer'] + ", SN-" + data_source[i]['serial_number'];
+        let active_state = (data_source[i]['active'] == 0) ? "Active" : "Not Active";
+
+        let query_row = "" + data_source[i]['auto_id'] + ", " + data_source[i]['type'] + ", " + data_source[i]['manufacturer'] + ", SN-" + data_source[i]['serial_number'] + ", " + active_state;
         let list_item = document.createElement('li');
 
         list_item.innerText = query_row;

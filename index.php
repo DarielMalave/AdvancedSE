@@ -203,6 +203,14 @@
 
     <br>
 
+    <label for="active">Select active/inactive</label>
+    <select id="actice" name="active" required>
+        <option value="0">Active</option>
+        <option value="1">Not Active</option>
+    </select>
+
+    <br>
+
     <button type="submit" name="mod_device">Modify Device</button>
 </form>
 
@@ -326,7 +334,7 @@
     
         $fetchDuplicate = $mysqli->query("SELECT * FROM devices WHERE serial_number = '$get_serial_number' LIMIT 1") or die($mysqli->error());
         if (mysqli_num_rows($fetchDuplicate) == 0) {
-            header("location: index.php?pdfnotfound");
+            echo "<p>Unable to find valid serial number</p>";
             exit();
         }
 
