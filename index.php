@@ -150,7 +150,8 @@
         <div class="dropdown-content">
             <div class="info_text">
                 <ul>
-                    <li>Enter existing serial number then select new device type, manufacturer, and/or new serial number.</li>
+                    <li>Enter existing serial number then select new device type, manufacturer, and/or new serial
+                        number.</li>
                     <li>You must enter a valid manufacturer and device type, but new serial number is optional.</li>
                 </ul>
             </div>
@@ -174,7 +175,8 @@
 
 <form action="modify_device.php" method="POST">
     <label for="mod_serial_number">Enter serial number: </label>
-    <input type="text" placeholder="Enter existing serial number" name="mod_serial_number" id="mod_serial_number" required>
+    <input type="text" placeholder="Enter existing serial number" name="mod_serial_number" id="mod_serial_number"
+        required>
 
     <br>
 
@@ -203,3 +205,148 @@
 
     <button type="submit" name="mod_device">Modify Device</button>
 </form>
+
+<br>
+
+<a href="#top">Return to top</a>
+
+<hr>
+
+<div class="title_con">
+    <h2>Delete Device From Database</h2>
+    <div class="dropdown">
+        <img src="circle-question-solid.svg" class="icon">
+        <div class="dropdown-content">
+            <div class="info_text">
+                <ul>
+                    <li>Enter an existing serial number for a device to delete it.</li>
+                    <li>Deleting based on device type or manufacturer is not allowed because that could allow
+                        users to delete hundreds of thousands of records in a single click.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+    if (isset($_GET['deletenotfound'])) {
+        echo "<p>Serial number not found. Please insert existing serial number.</p>";
+    }
+
+    if (isset($_GET['deletesuccess'])) {
+        echo "<p>Deleted serial number successfully.</p>";
+    }
+?>
+
+<form action="delete_device.php" method="POST">
+    <label for="delete_serial_number">Enter serial number to delete: </label>
+    <input type="text" placeholder="Enter existing serial number" name="delete_serial_number" id="delete_serial_number"
+        required>
+
+    <br>
+
+    <button type="submit" name="delete_device">Delete Device</button>
+</form>
+
+<br>
+
+<a href="#top">Return to top</a>
+
+<hr>
+
+<div class="title_con">
+    <h2>Upload PDF File to Device</h2>
+    <div class="dropdown">
+        <img src="circle-question-solid.svg" class="icon">
+        <div class="dropdown-content">
+            <div class="info_text">
+                <ul>
+                    <li>Upload a PDF file and bind it to a specific device by giving the device's exact serial number.
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<form method="post" enctype="multipart/form-data" action="upload_file.php">
+    <label for="file_serial_number">Enter serial number to bind: </label>
+    <input type="text" placeholder="Enter existing serial number" name="file_serial_number" id="file_serial_number"
+        required>
+    <br>
+    <input type="hidden" name="MAX_FILE_SIZE" value="5000000">
+    <input name="userfile" type="file" id="userfile" required>
+    <br>
+    <br>
+    <button type="submit" name="upload_file">Upload File</button>
+</form>
+
+<br>
+
+<a href="#top">Return to top</a>
+
+<hr>
+
+<div class="title_con">
+    <h2>View PDF Files from Specific Devices</h2>
+    <div class="dropdown">
+        <img src="circle-question-solid.svg" class="icon">
+        <div class="dropdown-content">
+            <div class="info_text">
+                <ul>
+                    <li>Enter an exact serial number to view any PDF file(s) bound to that exact device.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+    if (isset($_GET['pdfnotfound'])) {
+        echo "<p>Serial number not found. Please insert existing serial number.</p>";
+    }
+?>
+
+<form method="post" action="">
+    <label for="get_serial_number">Enter serial number to find PDF:</label>
+    <input type="text" placeholder="Enter existing serial number" name="get_serial_number" id="get_serial_number"
+        required>
+    <br>
+    <button type="submit" name="get_file">Find PDF Files</button>
+</form>
+
+<?php
+    include('setup_db.php');
+    $mysqli = db_iconnect("equipment");
+    if (isset($_POST['get_file'])) {
+        $get_serial_number = $_POST['get_serial_number'];
+        $get_serial_number = trim($get_serial_number, "SN-");
+        $device_id = "";
+    
+        $fetchDuplicate = $mysqli->query("SELECT * FROM devices WHERE serial_number = '$get_serial_number' LIMIT 1") or die($mysqli->error());
+        if (mysqli_num_rows($fetchDuplicate) == 0) {
+            header("location: index.php?pdfnotfound");
+            exit();
+        }
+
+        $row = $fetchDuplicate->fetch_assoc();
+        $device_id = $row['auto_id'];
+
+        $query = "SELECT * FROM files WHERE device_id = '$device_id'";
+        $result = $mysqli->query($query) or die($mysqli->error());
+        if (mysqli_num_rows($result) == 0) {
+            echo "<p>No PDF found associated with this serial number.</p>";
+            exit();
+        }
+    
+        while ($row = $result->fetch_assoc()) {
+            echo "<a href='./files/" . $row['file_name'] . "' target='_blank'>" . $row['file_name'] . "</a>";
+            echo "<br>";
+        }
+    }
+?>
+
+<br>
+
+<a href="#top">Return to top</a>

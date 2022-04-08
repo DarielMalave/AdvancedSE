@@ -12,15 +12,18 @@ $manufacturers = array("Microsoft", "Sony", "LG", "Chrysler", "Samsung", "KIA", 
 
 if (!in_array($new_manufacturer, $manufacturers)) {
     header("location: index.php?manfail");
+    exit();
 }
 
 if (!preg_match("/[A-Za-z]+[A-Za-z0123456789-]+/", $new_serial_number) || strlen($new_serial_number) > 64) {
     header("location: index.php?serialfail");
+    exit();
 }
 
 $fetchDuplicate = $mysqli->query("SELECT serial_number FROM devices WHERE serial_number = '$new_serial_number' LIMIT 1") or die($mysqli->error());
 if (mysqli_num_rows($fetchDuplicate) > 0) {
     header("location: index.php?duplicate");
+    exit();
 }
 
 $query = "INSERT INTO devices (type, manufacturer, serial_number) VALUES ('$new_type', '$new_manufacturer', '$new_serial_number');";
