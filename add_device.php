@@ -18,7 +18,7 @@ if (!preg_match("/[A-Za-z]+[A-Za-z0123456789-]+/", $new_serial_number) || strlen
     header("location: index.php?serialfail");
 }
 
-$fetchDuplicate = $mysqli->query("SELECT serial_number FROM devices WHERE serial_number = '$new_serial_number'") or die($mysqli->error());
+$fetchDuplicate = $mysqli->query("SELECT serial_number FROM devices WHERE serial_number = '$new_serial_number' LIMIT 1") or die($mysqli->error());
 if (mysqli_num_rows($fetchDuplicate) > 0) {
     header("location: index.php?duplicate");
 }

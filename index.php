@@ -179,7 +179,7 @@
     <br>
 
     <label for="new_mod_serial_number">Enter new serial number (optional): </label>
-    <input type="text" placeholder="Enter new serial number" name="new_mod_serial_number" id="new_mod_serial_number" required>
+    <input type="text" placeholder="Enter new serial number" name="new_mod_serial_number" id="new_mod_serial_number">
 
     <br>
 
@@ -196,7 +196,7 @@
 
     <br>
 
-    <label for="manufacturer">Enter new manufacturer name: </label>
+    <label for="mod_manufacturer">Enter new manufacturer name: </label>
     <input type="text" placeholder="Enter valid name" name="mod_manufacturer" id="mod_manufacturer" required>
 
     <br>
