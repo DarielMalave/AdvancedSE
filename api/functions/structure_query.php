@@ -18,11 +18,11 @@ function structure_query($url) {
     // If there are no filters in the URL, the default query is going to
     // return all cards from all sets
     if (empty($filter_params) || empty(strpos($string_url, "?"))) {
-	    return "SELECT * FROM cards";
+	    return "SELECT * FROM devices";
     }
 
     // Base query string used to fetch cards from database
-    $query = "SELECT * FROM cards WHERE ";
+    $query = "SELECT * FROM devices WHERE ";
 
     // order filters by alphabetical order
     sort($pair_of_filters);
