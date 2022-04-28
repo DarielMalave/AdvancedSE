@@ -22,6 +22,7 @@ if (isset($_POST['upload_file']) && $_FILES['userfile']['type'] != "application/
 
 if (isset($_POST['upload_file']) && $_FILES['userfile']['size'] > 0) {
     $upload_directory = "C:/xampp/htdocs/Advanced/files";
+    //$upload_directory = "/var/www/html";
 
     $fileName = $_FILES['userfile']['name'];
     $tmpName  = $_FILES['userfile']['tmp_name'];
