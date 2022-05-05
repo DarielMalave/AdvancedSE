@@ -2,6 +2,8 @@
 include ('functions/setup_db.php');
 include ("functions/structure_query.php");
 
+// filters and paramters: auto_id, type, manufacturer, serial_number, active, page
+
 // establish database connection
 $mysqli = db_iconnect("equipment_new");
 
