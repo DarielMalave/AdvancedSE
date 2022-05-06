@@ -2,7 +2,6 @@
 // Script will throw a warning if user attempts to upload an empty file, so supress that warning
 error_reporting(E_ERROR | E_PARSE);
 include ('functions/setup_db.php');
-include ("functions/structure_query.php");
 
 $mysqli = db_iconnect("equipment");
 
