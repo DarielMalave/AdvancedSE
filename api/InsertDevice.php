@@ -62,7 +62,7 @@ if (!in_array($new_manufacturer, $manufacturers)) {
     header('Content-Type: application/json');
     header('HTTP/1.1 200 OK');
     $output['status'] = "Error";
-    $output['message'] = "Please insert valid manufacturer name.";
+    $output['message'] = "Please insert valid manufacturer name. Case sensitive.";
     $output['data'] = "";
     $responseData = json_encode($output);
     echo $responseData;
@@ -70,7 +70,7 @@ if (!in_array($new_manufacturer, $manufacturers)) {
 }
 
 // If new_serial_number does not fit the structure of serial_number, throw an error
-if (!preg_match("/[A-Za-z]+[A-Za-z0123456789-]+/", $new_serial_number) || strlen($new_serial_number) > 64) {
+if (!preg_match("/^[A-Za-z]+[A-Za-z0123456789-]+$/", $new_serial_number) || strlen($new_serial_number) > 64) {
     header('Content-Type: application/json');
     header('HTTP/1.1 200 OK');
     $output['status'] = "Error";
@@ -97,7 +97,9 @@ if (mysqli_num_rows($fetchDuplicate) > 0) {
 // After error checking, insert device
 $query = "INSERT INTO devices (type, manufacturer, serial_number, active) VALUES ('$new_type', '$new_manufacturer', '$new_serial_number', '$new_active');";
 $result = $mysqli->query($query);
+
 // if the result from query is empty, then an error occured
+// NOTE: I'm not sure if this will catch any errors, but I'm leaving this in just in case
 if (empty($result)) {
     header('Content-Type: application/json');
     header('HTTP/1.1 200 OK');

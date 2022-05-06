@@ -2,7 +2,7 @@
 include ('functions/setup_db.php');
 include ("functions/structure_query.php");
 
-// filters and paramters:
+// filters and parameters:
 // first should be serial_number in question for modifying
 // then type, manufacturer, active
 
@@ -65,6 +65,8 @@ if (in_array(1, $missing_parameters)) {
 // establish database connection
 $mysqli = db_iconnect("equipment");
 
+// If user does not want to update serial number, do not update serial number and update everything else
+// If user does want to update serial number, update serial number and update everything else
 if (empty($mod_new_serial_number)) {
     $query = "UPDATE devices SET type = '$mod_type', manufacturer = '$mod_manufacturer', active = '$mod_active' WHERE serial_number = '$mod_serial_number'";
 }
@@ -75,6 +77,7 @@ else {
 $result = $mysqli->query($query);
 
 // if the result from query is empty, then an error occured
+// NOTE: I'm not sure if this will catch any errors, but I'm leaving this in just in case
 if (empty($result)) {
     header('Content-Type: application/json');
     header('HTTP/1.1 200 OK');
