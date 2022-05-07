@@ -10,7 +10,7 @@ function structure_query($url) {
 
     // Get URL string after the question mark to only deal with
     // filters
-    $filter_params = substr($string_url, strpos($string_url, "?") + 1);    
+    $filter_params = substr($string_url, strpos($string_url, "?") + 1);
 
     // Get individual filters from splitting the array based on &
     $pair_of_filters = explode("&", $filter_params);
